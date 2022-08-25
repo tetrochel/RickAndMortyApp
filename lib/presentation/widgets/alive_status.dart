@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 
 class AliveStatus extends StatelessWidget {
-  bool isAlive;
-  double size;
-  AliveStatus(this.size, this.isAlive, {Key? key}) : super(key: key);
+  final bool isAlive;
+  final double size;
+  const AliveStatus(this.size, this.isAlive, {Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {

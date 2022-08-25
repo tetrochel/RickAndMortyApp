@@ -13,13 +13,8 @@ class App extends StatelessWidget {
         statusBarIconBrightness: Brightness.dark,
       ),
     );
-    return MaterialApp(
-      theme: ThemeData(
-        textTheme: const TextTheme(
-          bodyText1: TextStyle(color: Colors.black),
-        ),
-      ),
-      home: const MainPage(),
+    return const MaterialApp(
+      home: MainPage(),
     );
   }
 }

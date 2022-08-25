@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
-import '../../data/api_pequests.dart';
+import 'package:rick_and_morty_app/data/api_pequests.dart';
 import '../widgets/character_card.dart';
 
 class MainPage extends StatefulWidget {
@@ -13,7 +13,7 @@ class MainPage extends StatefulWidget {
 class _MainPageState extends State<MainPage> {
   List<Character> characters = [];
   bool isDataLoading = false;
-  int page = 1;
+
   @override
   Widget build(BuildContext context) {
     return SafeArea(
@@ -46,8 +46,15 @@ class _MainPageState extends State<MainPage> {
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          SvgPicture.asset("assets/logo.svg"),
-                          SvgPicture.asset("assets/night_mode.svg"),
+                          SvgPicture.asset(
+                            "assets/logo.svg",
+                          ),
+                          InkWell(
+                            onTap: () {},
+                            child: SvgPicture.asset(
+                              "assets/night_mode.svg",
+                            ),
+                          ),
                         ],
                       ),
                     ),
@@ -98,7 +105,7 @@ class _MainPageState extends State<MainPage> {
               Padding(
                 padding: const EdgeInsets.fromLTRB(20, 0, 20, 20),
                 child: FutureBuilder<List<Character>>(
-                  future: Data.addCharacters(characters, page++),
+                  future: Data.addCharacters(characters),
                   builder: (context, snapshot) {
                     if (snapshot.connectionState == ConnectionState.done) {
                       isDataLoading = false;
@@ -109,13 +116,14 @@ class _MainPageState extends State<MainPage> {
                           itemCount: snapshot.data!.length,
                           gridDelegate:
                               const SliverGridDelegateWithMaxCrossAxisExtent(
-                                  childAspectRatio: 7 / 10,
+                                  childAspectRatio: 0.73,
                                   crossAxisSpacing: 20,
                                   mainAxisSpacing: 20,
                                   maxCrossAxisExtent: 200),
                           shrinkWrap: true,
                           itemBuilder: (context, index) {
-                            return CharacterCard(snapshot.data![index]);
+                            return CharacterCard(
+                                character: snapshot.data![index]);
                           });
                     } else {
                       return const Center(

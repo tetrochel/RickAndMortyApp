@@ -2,14 +2,20 @@ import 'dart:convert';
 import 'package:http/http.dart' as http;
 
 class Data {
+  // ignore: prefer_final_fields
+  static String? _nextUrl = 'https://rickandmortyapi.com/api/character/?page=1';
+
   static Future<List<Character>>? addCharacters(
-      List<Character> characters, int page) async {
-    final response = await http.get(
-        Uri.parse('https://rickandmortyapi.com/api/character/?page=$page'));
+      List<Character> characters) async {
+    if (_nextUrl == null) {
+      return characters;
+    }
+    final response = await http.get(Uri.parse(_nextUrl!));
     if (response.statusCode == 200) {
-      var json = jsonDecode(response.body)['results'];
-      for (int i = 0; i < 20; i++) {
-        characters.add(Character(json[i]));
+      var json = jsonDecode(response.body);
+      _nextUrl = json['info']['next'];
+      for (var character in json['results']) {
+        characters.add(Character(character));
       }
       return characters;
     } else {

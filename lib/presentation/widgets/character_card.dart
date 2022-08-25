@@ -4,8 +4,8 @@ import 'package:rick_and_morty_app/presentation/pages/character_page.dart';
 import 'alive_status.dart';
 
 class CharacterCard extends StatelessWidget {
-  Character character;
-  CharacterCard(this.character, {Key? key}) : super(key: key);
+  final Character character;
+  const CharacterCard({required this.character, Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -14,68 +14,77 @@ class CharacterCard extends StatelessWidget {
         Navigator.push(
           context,
           MaterialPageRoute(
-            builder: (context) => CharacterPage(character),
+            builder: (context) => CharacterPage(character: character),
           ),
         );
       },
-      child: ClipRRect(
-        borderRadius: BorderRadius.circular(10),
-        child: Column(
-          children: [
-            Container(
+      child: Column(
+        children: [
+          ClipRRect(
+            borderRadius: const BorderRadius.only(
+              topRight: Radius.circular(10),
+              topLeft: Radius.circular(10),
+            ),
+            child: Container(
               color: Colors.white,
               height: 170,
-              width: double.infinity,
-              child: Image.network(character.image, fit: BoxFit.fill),
-            ),
-            Container(
-              decoration: const BoxDecoration(
-                borderRadius: BorderRadius.only(
-                    bottomRight: Radius.circular(10),
-                    bottomLeft: Radius.circular(10)),
-                color: Colors.white,
+              width: 170,
+              child: Image.network(
+                character.image,
+                fit: BoxFit.fill,
               ),
-              padding: const EdgeInsets.fromLTRB(8, 4, 8, 10),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Text(
-                    character.name,
-                    overflow: TextOverflow.ellipsis,
-                    style: const TextStyle(
-                      fontFamily: 'Play',
-                      fontWeight: FontWeight.w700,
-                      fontSize: 20,
+            ),
+          ),
+          Container(
+            decoration: const BoxDecoration(
+              borderRadius: BorderRadius.only(
+                bottomRight: Radius.circular(10),
+                bottomLeft: Radius.circular(10),
+              ),
+              color: Colors.white,
+            ),
+            height: 55,
+            width: 170,
+            padding: const EdgeInsets.fromLTRB(8, 4, 8, 10),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text(
+                  character.name,
+                  overflow: TextOverflow.ellipsis,
+                  style: const TextStyle(
+                    fontFamily: 'Play',
+                    fontWeight: FontWeight.w700,
+                    fontSize: 20,
+                  ),
+                ),
+                const SizedBox(
+                  height: 3,
+                ),
+                Row(
+                  children: [
+                    Padding(
+                      padding: const EdgeInsets.all(4),
+                      child: AliveStatus(6, character.status),
                     ),
-                  ),
-                  const SizedBox(
-                    height: 3,
-                  ),
-                  Row(
-                    children: [
-                      Padding(
-                        padding: const EdgeInsets.all(4),
-                        child: AliveStatus(6, character.status),
-                      ),
-                      Expanded(
-                        child: Text(
-                          "${character.status ? "Alive" : "Dead"} - ${character.species}",
-                          overflow: TextOverflow.ellipsis,
-                          style: const TextStyle(
-                            fontFamily: 'Play',
-                            fontWeight: FontWeight.w400,
-                            fontSize: 12,
-                          ),
+                    Expanded(
+                      child: Text(
+                        "${character.status ? "Alive" : "Dead"} - ${character.species}",
+                        overflow: TextOverflow.ellipsis,
+                        style: const TextStyle(
+                          fontFamily: 'Play',
+                          fontWeight: FontWeight.w400,
+                          fontSize: 12,
                         ),
                       ),
-                    ],
-                  ),
-                ],
-              ),
+                    ),
+                  ],
+                ),
+              ],
             ),
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }

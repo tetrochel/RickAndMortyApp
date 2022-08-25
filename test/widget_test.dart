@@ -8,7 +8,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 
-import 'package:rick_and_morty_app/main.dart';
 import 'package:rick_and_morty_app/presentation/app.dart';
 
 void main() {
