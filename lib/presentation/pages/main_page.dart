@@ -13,6 +13,7 @@ class MainPage extends StatefulWidget {
 class _MainPageState extends State<MainPage> {
   List<Character> characters = [];
   bool isDataLoading = false;
+  String query = '';
 
   @override
   Widget build(BuildContext context) {
@@ -24,70 +25,30 @@ class _MainPageState extends State<MainPage> {
             if (notification.metrics.maxScrollExtent -
                         2 * MediaQuery.of(context).size.height <=
                     notification.metrics.pixels &&
-                !isDataLoading) {
+                !isDataLoading &&
+                !Data.isLastUrl) {
               isDataLoading = true;
               setState(() {});
             }
             return true;
           },
           child: ListView(
-            addAutomaticKeepAlives: false,
             physics: const AlwaysScrollableScrollPhysics(
                 parent: BouncingScrollPhysics()),
             children: [
-              Container(
-                height: 235,
-                color: Colors.white,
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Padding(
-                      padding: const EdgeInsets.all(16),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          SvgPicture.asset(
-                            "assets/logo.svg",
-                          ),
-                          InkWell(
-                            onTap: () {},
-                            child: SvgPicture.asset(
-                              "assets/night_mode.svg",
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                    Stack(
-                      children: const [
-                        Padding(
-                          padding: EdgeInsets.only(bottom: 26),
-                          child: Text(
-                            'The Rick and Morty App',
-                            softWrap: true,
-                            textAlign: TextAlign.center,
-                            style: TextStyle(
-                              fontFamily: 'Play',
-                              fontWeight: FontWeight.w700,
-                              fontSize: 40,
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
-                  ],
-                ),
-              ),
-              const Padding(
-                padding: EdgeInsets.all(20),
-                child: TextField(
-                  style: TextStyle(
+              const Header(),
+              Padding(
+                padding: const EdgeInsets.all(20),
+                child: TextFormField(
+                  initialValue: query,
+                  onChanged: search,
+                  style: const TextStyle(
                     fontFamily: 'Play',
                     fontWeight: FontWeight.w700,
                     fontSize: 24,
                   ),
                   cursorColor: Colors.black,
-                  decoration: InputDecoration(
+                  decoration: const InputDecoration(
                     contentPadding: EdgeInsets.all(12),
                     border: OutlineInputBorder(
                       borderRadius: BorderRadius.all(Radius.circular(10.0)),
@@ -136,6 +97,73 @@ class _MainPageState extends State<MainPage> {
             ],
           ),
         ),
+      ),
+    );
+  }
+
+  void search(value) {
+    value = value.trim();
+    query = value;
+    setState(() {
+      characters = [];
+      if (value == '') {
+        Data.firstUrl = 'https://rickandmortyapi.com/api/character/?page=1';
+      } else {
+        Data.firstUrl =
+            'https://rickandmortyapi.com/api/character/?name=$value';
+      }
+    });
+  }
+}
+
+class Header extends StatelessWidget {
+  const Header({
+    Key? key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      height: 235,
+      color: Colors.white,
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          Padding(
+            padding: const EdgeInsets.all(16),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                SvgPicture.asset(
+                  "assets/logo.svg",
+                ),
+                InkWell(
+                  onTap: () {},
+                  child: SvgPicture.asset(
+                    "assets/night_mode.svg",
+                  ),
+                ),
+              ],
+            ),
+          ),
+          Stack(
+            children: const [
+              Padding(
+                padding: EdgeInsets.only(bottom: 26),
+                child: Text(
+                  'The Rick and Morty App',
+                  softWrap: true,
+                  textAlign: TextAlign.center,
+                  style: TextStyle(
+                    fontFamily: 'Play',
+                    fontWeight: FontWeight.w700,
+                    fontSize: 40,
+                  ),
+                ),
+              ),
+            ],
+          ),
+        ],
       ),
     );
   }

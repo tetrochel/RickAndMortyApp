@@ -5,6 +5,10 @@ class Data {
   // ignore: prefer_final_fields
   static String? _nextUrl = 'https://rickandmortyapi.com/api/character/?page=1';
 
+  static bool get isLastUrl => _nextUrl == null;
+
+  static set firstUrl(String firstUrl) => _nextUrl = firstUrl;
+
   static Future<List<Character>>? addCharacters(
       List<Character> characters) async {
     if (_nextUrl == null) {
@@ -17,10 +21,9 @@ class Data {
       for (var character in json['results']) {
         characters.add(Character(character));
       }
-      return characters;
-    } else {
-      throw Exception('Failed to load Character');
     }
+
+    return characters;
   }
 }
 

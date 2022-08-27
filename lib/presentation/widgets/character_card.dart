@@ -14,7 +14,7 @@ class CharacterCard extends StatelessWidget {
         Navigator.push(
           context,
           MaterialPageRoute(
-            builder: (context) => CharacterPage(character: character),
+            builder: (context) => CharacterPage(character),
           ),
         );
       },
